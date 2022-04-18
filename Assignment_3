@@ -1,0 +1,39 @@
+customers <- TeleCustomers_Spreadsheet
+
+plot(customers$Age, customers$Est_Income, xlab = "Age", ylab = "Est Income", xlim = c(18, 80), ylim = c(20000, 120000), main = "Est Income vs Age", col = customers$RatePlan, pch = customers$RatePlan)+
+  abline(lm(customers$Est_Income~customers$Age, data = customers), col = 10)
+
+data(iris)
+head(iris)
+plot(iris$Sepal.Length, xlab = "Data ID", ylab = "sepal length",ylim = c(0,14), type = "l", col = 1)
+points(iris$Sepal.Width, type = "l", col = 2, lty=2)
+lines(iris$Petal.Length, col=3, lty=3)
+lines(iris$Petal.Width, col=4, lty=4)
+legend(x=10, y=14, legend = names(iris[1:4]), lty = c(1,2,3,4),col = c(1,2,3,4))
+
+hist(iris$Sepal.Length, xlab = "sepal length", main = "dist", breaks = 20)
+dst <- density(iris$Sepal.Width)
+plot(dst, "sepal width", main = "dist of sepal width")
+polygon(dst, col = "red", border = "blue")
+counts <- table(iris$Species)
+barplot(counts, main = "iris species dist", xlab = "species")
+types <- aggregate(Sepal.Length~Species, data=iris, FUN = mean)
+barplot(types$Sepal.Length, ylab = "s length", horiz = TRUE, names.arg = c("setosa", "versicolor", "virginica"), col=c(4,5,6))
+
+library(ggplot2)
+mtcars$gear <- factor(mtcars$gear, levels = c(3,4,5), labels = c("3gears", "4gears", "5gears"))
+mtcars$am <- factor(mtcars$am, levels =  c(0,1), labels = c("Automatic", "Manual"))
+mtcars$cyl <- factor(mtcars$cyl, levels = c(4,6,8), labels = c("4cyl", "6cyl", "8cyl"))
+qplot(mpg, data=mtcars,geom = "density", fill=gear, alpha=I (.5), main = "Distribution of gas mileage", xlab = "MPG", ylab = "Density")
+
+qplot(hp, mpg, data=mtcars, shape = am, color = am, facets = gear~cyl, size= I (3), xlab = "Horsepower", ylab = "MPG" )
+qplot(gear, mpg, data=mtcars, geom=c("boxplot", "jitter"), fill = gear, main = "mileage by gear number", xlab = "", ylab = "MPG")
+scatterplot(prestige~income|type, boxplots=FALSE, span = .75, data = Prestige)
+scatter3d(prestige ~ income + education, id.n=3, data = Duncan)
+gender <- aggregate(Est_Income ~ Sex, data=customers,)
+qplot(Est_Income, data =  customers, fill = Sex, ylab = "Count", main = "Estimated Income by Gender", bins = 30)
+qplot(Usage, data =  customers, fill = Sex, ylab = "Count", main = "Usage by Gender", bins = 30)
+qplot(Est_Income, data =  customers, fill = CHURN, ylab = "Count", main = "Estimated Income by CHURN", bins = 30)
+qplot(Usage, data =  customers, fill = CHURN, ylab = "Count", main = "Usage by CHURN", bins = 30)
+qplot(CHURN, Usage, data=customers, facets = Sex~RatePlan, main = "CHURN vs Usage by Rate Plan and Gender")
+qplot(CHURN, Usage, data=customers, geom= "boxplot", main = "Usage by CHURN")
